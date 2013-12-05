@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Custom Popup</title>
+  
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+  <script src='//api.tiles.mapbox.com/mapbox.js/v1.5.1/mapbox.js'></script>
+  <link href='//api.tiles.mapbox.com/mapbox.js/v1.5.1/mapbox.css' rel='stylesheet' />
+  
+  <style>
+    body { margin:0; padding:0; }
+    #map { position:absolute; top:0; bottom:0; width:100%; }
+  </style>
+</head>
+<body>
+<div id='map'></div>
+<script>
+var map = L.mapbox.map('map', 'mtaylorlong.gf08hon0')
+    .setView([38.72, -98.00], 4);
+
+var markerLayer = L.mapbox.markerLayer({
+        type: 'FeatureCollection',
+        features: [{
+            type: 'Feature',
+            properties: {
+                name: 'Eric S.',
+                //date: 'Feb 28, 2012'.
+                comment: 'Noted a mixed flock of birds foraging in adjacent residential yards in small subdivision while driving. I stopped temporarily to determine species composition. I pointed the birds out to my son Ethan.',
+            },
+            geometry: {
+                type: 'Point',
+                coordinates: [-85.0635947, 32.5406803]
+            }
+        }]
+    })
+    .addTo(map);
+
+// note that calling `.eachLayer` here depends on setting GeoJSON _directly_
+// above. If you're loading GeoJSON asynchronously, like from CSV or from a file,
+// you will need to do this within a `markerLayer.on('ready'` event
+
+markerLayer.eachLayer(function(layer) {
+
+    // here you call `bindPopup` with a string of HTML you create - the feature
+    // properties declared above are available under `layer.feature.properties`
+
+    var content = '<h3>' + layer.feature.properties.name + '<\/h3>' +
+        '<p>' + layer.feature.properties.comment + '<\/p>';
+    layer.bindPopup(content);
+});
+</script>
+</body>
+</html>
