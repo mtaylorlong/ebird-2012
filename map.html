@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8 />
+    <title>Layers</title>
+  
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+    <script src='//api.tiles.mapbox.com/mapbox.js/v1.5.1/mapbox.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/v1.5.1/mapbox.css' rel='stylesheet' />
+    <script src='./stories.geojson'></script>
+  
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        h3.story { font-size: 150%; color:#2b90bf;}
+        p.story { font-size: 90%; color:#303030; line-height: 1.5em;}
+        #map-ui {
+            position: absolute;
+            top: 75px;
+            left: 10px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            z-index: 100;
+        }
+
+        #map-ui a {
+            font: normal 13px/18px 'Helvetica Neue', Helvetica, sans-serif;
+            background: #FFF;
+            color: #3C4E5A;
+            display: block;
+            margin: 0;
+            padding: 0;
+            border: 1px solid #BBB;
+            border-bottom-width: 0;
+            min-width: 138px;
+            padding: 10px;
+            text-decoration: none;
+        }
+
+        #map-ui a:hover {
+            background: #ECF5FA;
+        }
+
+        #map-ui li:last-child a {
+            border-bottom-width: 1px;
+            -webkit-border-radius: 0 0 3px 3px;
+            border-radius: 0 0 3px 3px;
+        }
+
+        #map-ui li:first-child a {
+            -webkit-border-radius: 3px 3px 0 0;
+            border-radius: 3px 3px 0 0;
+        }
+
+        #map-ui a.active {
+            background: #3887BE;
+            border-color: #3887BE;
+            border-top-color: #FFF;
+            color: #FFF;
+        }
+    </style>
+</head>
+
+<body>
+
+<ul id='map-ui'></ul>
+<div id='map'></div>
+
+<script>
+var map = L.mapbox.map('map', 'mtaylorlong.gf08hon0').setView([38.72, -98.00], 5);
+var ui = document.getElementById('map-ui');
+
+//addLayer(L.mapbox.tileLayer('mtaylorlong.gf08hon0'), 'Base Map', 1);
+var markerLayer = L.mapbox.markerLayer(geojson);
+addLayer(markerLayer, 'Click to reveal a selection of list comments', 1);
+
+markerLayer.eachLayer(function(layer) {
+    var content = '<h3 class="story">' + layer.feature.properties.Name + '<\/h3>' +
+      '<p class="story"><strong>' + layer.feature.properties.Date + '</strong><\/p>' +
+      '<p class="story">' + layer.feature.properties.Comments + '<\/p>';
+    layer.bindPopup(content);
+});
+
+function addLayer(layer, name, zIndex) {
+    layer
+        .setZIndex(zIndex)
+        //.addTo(map);
+
+    // Create a simple layer switcher that toggles layers on
+    // and off.
+    var item = document.createElement('li');
+    var link = document.createElement('a');
+
+    link.href = '#';
+    link.className = '';
+    link.innerHTML = name;
+
+    link.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (map.hasLayer(layer)) {
+            map.removeLayer(layer);
+            this.className = '';
+        } else {
+            map.addLayer(layer);
+            this.className = 'active';
+        }
+    };
+
+    item.appendChild(link);
+    ui.appendChild(item);
+}
+
+//Add Popup Somewhere...?
+
+</script>
+</body>
+</html>
