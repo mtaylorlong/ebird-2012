@@ -28,20 +28,9 @@
 
         /*Move Leaflet Zoom Control to Custom Position*/
         .leaflet-top .leaflet-control {
-            /*position:absolute;*/
             top: 95px;
             left: 295px;
-/*            margin-top: 110px;
-            margin-left: 410px;*/
         }
-
-/*        .leaflet-control-layers, .leaflet-bar {
-            background-color: rgba(255,255,255,0.5);
-            border: 1px solid #999;
-            border-color: rgba(0,0,0,0.4);
-            border-radius: 3px;
-            box-shadow: none;
-        }*/
 
         /*Popup*/
         h3.story { 
@@ -98,7 +87,6 @@
         }
 
         h3.info {
-            /*font-size:100%;*/
             line-height: 0.25em;
             color: #49cbff;
         }
@@ -160,12 +148,6 @@
             box-shadow: 0px 0px 15px #848484;
         }
 
-/*        #map-ui li:last-child a {
-            border-bottom-width: 1px;
-            -webkit-border-radius: 3px 3px 3px 3px;
-            border-radius: 3px 3px 3px 3px;
-        }*/
-
         #map-ui li:first-child a {
             -webkit-border-radius: 3px 3px 3px 3px;
             border-radius: 3px 3px 3px 3px;
@@ -173,8 +155,6 @@
 
         #map-ui a.active {
             background: rgb(57, 160, 229);
-            /*border-color: #3887BE;*/
-            /*border-top-color: #FFF;*/
             color: #FFF;
         }
     </style>
@@ -213,7 +193,6 @@
     <script>
         // Initialize main map
         var map = L.mapbox.map('map', 'mtaylorlong.gf08hon0', {
-            // zoomControl: false,
             shareControl: true,
             minZoom: 4,
             maxZoom: 8,
@@ -236,7 +215,6 @@
         function addLayer(layer, name, zIndex) {
             layer
                 .setZIndex(zIndex)
-                //.addTo(map);
 
             // Create a simple layer switcher that toggles layers on and off.
             var item = document.createElement('li');
