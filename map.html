@@ -15,10 +15,35 @@
         #map { position:absolute; top:0; bottom:0; width:100%; }
 
         /*Move Leaflet Zoom Control to Custom Position*/
-        .leaflet-top .leaflet-control {margin-top: 100px}
+        .leaflet-top .leaflet-control {margin-top: 125px}
 
         h3.story { font-size: 150%; color:#2b90bf;}
         p.story { font-size: 90%; color:#303030; line-height: 1.5em;}
+
+        .header {
+        position: absolute;
+        top:0;
+        left:0;
+        background: rgba(255,255,255, 0.9);
+        padding-top: 10px;
+        padding-left:20px;
+        padding-right:20px;
+        border-bottom-right-radius:10px;
+        box-shadow: 0px 0px 25px #848484;
+        z-index: 5;
+        }
+        h1.title {
+        color:#7A0019;
+        line-height: 0px;
+        }
+        p.title {
+        text-align: left;
+        font-size: 90%;
+        }
+        a.title {
+        color:#1a9ece;
+        text-decoration: none;
+        }
         
         #map-ui {
             position: absolute;
@@ -70,57 +95,62 @@
 
 <body>
 
-<ul id='map-ui'></ul>
-<div id='map'></div>
+    <ul id='map-ui'></ul>
+    <div id='map'></div>
 
-<script>
-var map = L.mapbox.map('map', 'mtaylorlong.gf08hon0').setView([38.72, -98.00], 5);
-var ui = document.getElementById('map-ui');
+    <!-- Header -->
+    <div class="header">
+        <h1 class="title">eBird 2010</h1>
+        <p class="title">
+          <a class="title" href="http://www.cehd.umn.edu/olpd/grad-programs/CIDE/">eBird Participation in 2012</a></p>
+    </div>
 
-//addLayer(L.mapbox.tileLayer('mtaylorlong.gf08hon0'), 'Base Map', 1);
-var markerLayer = L.mapbox.markerLayer(geojson);
-addLayer(markerLayer, 'Click to reveal a selection of list comments', 1);
+    <script>
+        var map = L.mapbox.map('map', 'mtaylorlong.gf08hon0').setView([38.72, -98.00], 5);
+        var ui = document.getElementById('map-ui');
 
-markerLayer.eachLayer(function(layer) {
-    var content = '<h3 class="story">' + layer.feature.properties.Name + '<\/h3>' +
-      '<p class="story"><strong>' + layer.feature.properties.Date + '</strong><\/p>' +
-      '<p class="story">' + layer.feature.properties.Comments + '<\/p>';
-    layer.bindPopup(content);
-});
+        //addLayer(L.mapbox.tileLayer('mtaylorlong.gf08hon0'), 'Base Map', 1);
+        var markerLayer = L.mapbox.markerLayer(geojson);
+        addLayer(markerLayer, 'Click to reveal a selection of list comments', 1);
 
-function addLayer(layer, name, zIndex) {
-    layer
-        .setZIndex(zIndex)
-        //.addTo(map);
+        markerLayer.eachLayer(function(layer) {
+            var content = '<h3 class="story">' + layer.feature.properties.Name + '<\/h3>' +
+              '<p class="story"><strong>' + layer.feature.properties.Date + '</strong><\/p>' +
+              '<p class="story">' + layer.feature.properties.Comments + '<\/p>';
+            layer.bindPopup(content);
+        });
 
-    // Create a simple layer switcher that toggles layers on
-    // and off.
-    var item = document.createElement('li');
-    var link = document.createElement('a');
+        function addLayer(layer, name, zIndex) {
+            layer
+                .setZIndex(zIndex)
+                //.addTo(map);
 
-    link.href = '#';
-    link.className = '';
-    link.innerHTML = name;
+            // Create a simple layer switcher that toggles layers on
+            // and off.
+            var item = document.createElement('li');
+            var link = document.createElement('a');
 
-    link.onclick = function(e) {
-        e.preventDefault();
-        e.stopPropagation();
+            link.href = '#';
+            link.className = '';
+            link.innerHTML = name;
 
-        if (map.hasLayer(layer)) {
-            map.removeLayer(layer);
-            this.className = '';
-        } else {
-            map.addLayer(layer);
-            this.className = 'active';
+            link.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                if (map.hasLayer(layer)) {
+                    map.removeLayer(layer);
+                    this.className = '';
+                } else {
+                    map.addLayer(layer);
+                    this.className = 'active';
+                }
+            };
+
+            item.appendChild(link);
+            ui.appendChild(item);
         }
-    };
 
-    item.appendChild(link);
-    ui.appendChild(item);
-}
-
-//Add Popup Somewhere...?
-
-</script>
+    </script>
 </body>
 </html>
